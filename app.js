@@ -1,10 +1,10 @@
 /*
+
 MODIFIED GAME RULES: MY VERSION (JS DONE BY ME, CSS and HTML ARE BOILERPLATE/SAMPLE CODE) - DIFFERENT THAN THE ORIGINAL DOM
 
 -A player loses his entire score (main score) when he rolls two 6's in a row. After that it's the next player's turn.
 -Add an input field for users to pick the winning score.
 -Lastly, add another dice, player loses his current score (round score) if either dice rolls a 1.
-
 
 */
 
@@ -12,8 +12,8 @@ MODIFIED GAME RULES: MY VERSION (JS DONE BY ME, CSS and HTML ARE BOILERPLATE/SAM
 *** DECLARED VARIABLES
 **********************************************/
 
-let activePlayer, scores, roundScore, stillPlaying, dice, diceRoll;
-let hold, roll, newGame, diceImg, p0_score, p0_curr, p1_curr, p1_score;
+let activePlayer, scores, roundScore, stillPlaying, dice, diceRoll, winningScore;
+let hold, roll, newGame, diceImg, p0_score, p0_curr, p1_curr, p1_score, scoreLimit, scoreForm;
 
 /**********************************************
 *** DEFINED VARIABLES
@@ -38,6 +38,8 @@ p0_curr = document.getElementById("current-0");
 p1_curr = document.getElementById("current-1");
 modal = document.querySelector(".modal");
 modal_btn = document.querySelector(".btn-white");
+scoreLimit = document.querySelector("#score_limit");
+scoreForm = document.querySelector("#score_form");
 
 /**********************************************
 *** STARTS A NEW GAME/ RESETS SCORES TO ZERO
@@ -110,7 +112,7 @@ let holding = function () {
     //   console.log(scores[activePlayer]);
     roundScore = 0;
     document.getElementById(`current-${activePlayer}`).textContent = 0;
-    if (scores[activePlayer] > 100) {
+    if (scores[activePlayer] > winningScore) {
         document.querySelector(`.player-${activePlayer}-panel`).classList.remove("active");
         document.querySelector(`.player-${activePlayer}-panel`).classList.add("winner")
         hold.style.display = "none";
@@ -159,7 +161,7 @@ window.setTimeout(start(), 1000);
 roll.addEventListener("click", diceRoll);
 hold.addEventListener("click", holding);
 newGame.addEventListener("click", start);
-modal_btn.addEventListener("click", clickModal);
+//modal_btn.addEventListener("click", clickModal);
 
 /**********************************************
 *** LISTENERS/EVENTS
@@ -169,9 +171,27 @@ function clickModal() {
     modal.style.visibility = "none";
     modal.style.opacity = "0";
     document.querySelector(".dark").style.opacity = "1";
-    document.body.style.zIndex="15";
-    modal.style.zIndex="-1";
+    document.body.style.zIndex = "15";
+    modal.style.zIndex = "-1";
 }
+
+
+
+scoreLimit.addEventListener("input", function (e) {
+    console.log(e.target.value);
+    winningScore = e.target.value;
+})
+
+scoreForm.addEventListener("submit", function () {
+    if ((Number(winningScore) > Number(scoreLimit.getAttribute("min")) && Number(winningScore) < Number(scoreLimit.getAttribute("max")))) {
+        clickModal();
+    } else {
+        console.log("something went wrong")
+    }
+})
+
+
+
 
 
 
