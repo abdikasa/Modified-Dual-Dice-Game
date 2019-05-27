@@ -36,6 +36,8 @@ p0_score = document.getElementById("score-0");
 p1_score = document.getElementById("score-1");
 p0_curr = document.getElementById("current-0");
 p1_curr = document.getElementById("current-1");
+modal = document.querySelector(".modal");
+modal_btn = document.querySelector(".btn-white");
 
 /**********************************************
 *** STARTS A NEW GAME/ RESETS SCORES TO ZERO
@@ -156,4 +158,21 @@ diceRoll = function () {
 window.setTimeout(start(), 1000);
 roll.addEventListener("click", diceRoll);
 hold.addEventListener("click", holding);
-newGame.addEventListener("click", start)
+newGame.addEventListener("click", start);
+modal_btn.addEventListener("click", clickModal);
+
+/**********************************************
+*** LISTENERS/EVENTS
+**********************************************/
+
+function clickModal() {
+    modal.style.visibility = "none";
+    modal.style.opacity = "0";
+    document.querySelector(".dark").style.opacity = "1";
+    document.body.style.zIndex="15";
+    modal.style.zIndex="-1";
+}
+
+
+
+
