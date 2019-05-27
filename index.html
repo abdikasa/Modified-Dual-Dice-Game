@@ -48,9 +48,12 @@
         </ul>
         <div class="center-helper">
             <h3 class="set_score">Set Score:</h3>
-            <input type="text">
+            <form action="#" name="score_form" id="score_form">
+            <input type="number" id="score_limit" min ="20"  max="200" required>
+            <button class="btn-white" type="submit">Start</button>
+
+        </form>
         </div>
-        <button class="btn-white">Start</button>
     </div>
 
     <script src="app.js"></script>
