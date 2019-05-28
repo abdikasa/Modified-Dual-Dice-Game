@@ -96,10 +96,11 @@ body {
     width: 90px;
     height: 35px;
     font-size: 20px;
+    margin-top: 0.8%;
 }
 
 .center-helper {
-    transform: translate(33%, 40%);
+    transform: translateY(15%);
     left: 50%;
     padding-bottom: 60px;
 }
@@ -118,6 +119,9 @@ body {
     margin-right: 2%;
     margin-top: -1.1%;
 }
+
+
+
 
 /**********************************************
 *** PLAYERS

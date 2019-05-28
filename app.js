@@ -183,10 +183,8 @@ scoreLimit.addEventListener("input", function (e) {
 })
 
 scoreForm.addEventListener("submit", function () {
-    if ((Number(winningScore) > Number(scoreLimit.getAttribute("min")) && Number(winningScore) < Number(scoreLimit.getAttribute("max")))) {
+    if ((Number(winningScore) >= Number(scoreLimit.getAttribute("min")) && Number(winningScore) <= Number(scoreLimit.getAttribute("max")))) {
         clickModal();
-    } else {
-        console.log("something went wrong")
     }
 })
 
