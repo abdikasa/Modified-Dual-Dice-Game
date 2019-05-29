@@ -13,7 +13,7 @@ MODIFIED GAME RULES: MY VERSION (JS DONE BY ME, CSS and HTML ARE BOILERPLATE/SAM
 **********************************************/
 
 let activePlayer, scores, roundScore, stillPlaying, dice, diceRoll, winningScore;
-let hold, roll, newGame, diceImg, p0_score, p0_curr, p1_curr, p1_score, scoreLimit, scoreForm;
+let hold, roll, newGame, diceImg, p0_score, p0_curr, p1_curr, p1_score, scoreLimit, scoreForm, hideError, hideError_content;
 
 /**********************************************
 *** DEFINED VARIABLES
@@ -40,7 +40,8 @@ modal = document.querySelector(".modal");
 modal_btn = document.querySelector(".btn-white");
 scoreLimit = document.querySelector("#score_limit");
 scoreForm = document.querySelector("#score_form");
-
+hideError = document.querySelector(".hidden");
+hideError_content = document.querySelector(".hidden_content");
 /**********************************************
 *** STARTS A NEW GAME/ RESETS SCORES TO ZERO
 **********************************************/
@@ -182,13 +183,22 @@ scoreLimit.addEventListener("input", function (e) {
     winningScore = e.target.value;
 })
 
-scoreForm.addEventListener("submit", function () {
-    if ((Number(winningScore) >= Number(scoreLimit.getAttribute("min")) && Number(winningScore) <= Number(scoreLimit.getAttribute("max")))) {
-        clickModal();
+scoreForm.addEventListener("submit", scoreInput);
+modal_btn.addEventListener("click", function () {
+    if (!scoreInput()) {
+        hideError.style.display = "block";
+        hideError.style.visibility = "visible"
+        hideError.classList.toggle("animate");
     }
 })
 
-
+function scoreInput() {
+    if ((Number(winningScore) >= Number(scoreLimit.getAttribute("min")) && Number(winningScore) <= Number(scoreLimit.getAttribute("max")))) {
+        clickModal();
+        return true;
+    }
+    return false;
+}
 
 
 
