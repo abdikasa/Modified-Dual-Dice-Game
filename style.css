@@ -256,11 +256,17 @@ i {
 .dice {
     position: absolute;
     left: 50%;
-    top: 178px;
+    top: 125px;
     transform: translateX(-50%);
     height: 100px;
     box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
 }
+
+#dice2 {
+    position: absolute;
+    top: 45%;
+}
+
 
 .winner {
     background-color: #f7f7f7;
@@ -297,3 +303,4 @@ i {
         transform: translateX(-10px) scale(1.01);
     }
 }
+
