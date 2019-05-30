@@ -12,7 +12,7 @@ MODIFIED GAME RULES: MY VERSION (JS DONE BY ME, CSS and HTML ARE BOILERPLATE/SAM
 *** DECLARED VARIABLES
 **********************************************/
 
-let activePlayer, scores, roundScore, stillPlaying, dice, diceRoll, winningScore;
+let activePlayer, scores, roundScore, stillPlaying, dice, dice2, diceRoll, winningScore;
 let hold, roll, newGame, diceImg, p0_score, p0_curr, p1_curr, p1_score, scoreLimit, scoreForm, hideError, hideError_content;
 
 /**********************************************
@@ -31,7 +31,7 @@ stillPlaying = true;
 hold = document.querySelector(".btn-hold");
 roll = document.querySelector(".btn-roll");
 newGame = document.querySelector(".btn-new");
-diceImg = document.querySelector(".dice");
+diceImg = document.querySelectorAll(".dice");
 p0_score = document.getElementById("score-0");
 p1_score = document.getElementById("score-1");
 p0_curr = document.getElementById("current-0");
@@ -42,6 +42,7 @@ scoreLimit = document.querySelector("#score_limit");
 scoreForm = document.querySelector("#score_form");
 hideError = document.querySelector(".hidden");
 hideError_content = document.querySelector(".hidden_content");
+
 /**********************************************
 *** STARTS A NEW GAME/ RESETS SCORES TO ZERO
 **********************************************/
@@ -67,7 +68,11 @@ function scoreReset() {
 }
 
 function handleButtonAction() {
-    diceImg.style.display = "none";
+
+    diceImg.forEach(function (item) {
+        item.style.display = "none";
+    })
+
     hold.style.display = "block";
     roll.style.display = "block";
 }
@@ -135,20 +140,30 @@ let holding = function () {
 //Switches turns if user rolls a 1, which results a round score of 0 and a skipped turn.
 
 diceRoll = function () {
-
+    var oldScore = roundScore;
     dice = Math.floor(Math.random() * 6) + 1;
-    diceImg.style.display = "block";
+    dice2 = Math.floor(Math.random() * 6) + 1;
 
-    if (dice === 1) {
+    diceImg.forEach(function (item) {
+        item.style.display = "block";
+    })
+
+    if (dice === 1 || dice2 === 1) {
         roundScore = 0;
         document.getElementById(`current-${activePlayer}`).textContent = roundScore;
         activePlayer = changeTurns();
+    } else if (dice === 6 && dice2 === 6) {
+        roundScore = 0;
+        document.getElementById(`score-${activePlayer}`).textContent = roundScore;
+        activePlayer = changeTurns();
     } else {
-        diceImg.src = `dice-${dice}.png`
-        roundScore += dice;
+        diceImg[0].src = `dice-${dice}.png`
+        diceImg[1].src = `dice-${dice2}.png`
+        oldScore = roundScore;
+        roundScore += (dice + dice2);
         document.getElementById(`current-${activePlayer}`).textContent = roundScore;
     }
-    console.log(`Round Score: ${roundScore}`);
+    console.log(`D1 [${dice}] + D2 [${dice2}] = ${roundScore} (Last score: ${oldScore})`);
 }
 
 /**********************************************
@@ -179,7 +194,6 @@ function clickModal() {
 
 
 scoreLimit.addEventListener("input", function (e) {
-    console.log(e.target.value);
     winningScore = e.target.value;
 })
 
