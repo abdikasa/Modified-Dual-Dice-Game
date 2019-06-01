@@ -13,7 +13,7 @@ MODIFIED GAME RULES: MY VERSION (JS DONE BY ME, CSS and HTML ARE BOILERPLATE/SAM
 **********************************************/
 
 let activePlayer, scores, roundScore, stillPlaying, dice, dice2, diceRoll, winningScore;
-let hold, roll, newGame, diceImg, p0_score, p0_curr, p1_curr, p1_score, scoreLimit, scoreForm, hideError, hideError_content;
+let hold, roll, newGame, diceImg, p0_score, p0_curr, p1_curr, p1_score, scoreLimit, scoreForm, hideError, hideError_content, pig_icon, pig_icon_link;
 
 /**********************************************
 *** DEFINED VARIABLES
@@ -42,6 +42,8 @@ scoreLimit = document.querySelector("#score_limit");
 scoreForm = document.querySelector("#score_form");
 hideError = document.querySelector(".hidden");
 hideError_content = document.querySelector(".hidden_content");
+pig_icon = document.querySelector(".pig-icon");
+pig_icon_link = document.querySelector(".pig_link");
 
 /**********************************************
 *** STARTS A NEW GAME/ RESETS SCORES TO ZERO
@@ -123,6 +125,7 @@ let holding = function () {
         document.querySelector(`.player-${activePlayer}-panel`).classList.add("winner")
         hold.style.display = "none";
         roll.style.display = "none";
+        pig_icon.style.zIndex = "16"
     } else {
         activePlayer = changeTurns();
     }
@@ -172,26 +175,14 @@ diceRoll = function () {
 
 //Aside from the timeout method, the rest of the listeners will not run into the website is fully ready when all functions have been executed.
 //Listeners are only called and executed in the cycle after the functions have been called.
+//Introduced something other than boring click to mouse(down||up), user presses it and holds it down, and when released the modal pops up.
+//Pig icon will not be accessible until a winner is declared so users can't just change scores whenever they feel like it.
 
-window.setTimeout(start(), 1000);
 roll.addEventListener("click", diceRoll);
+
 hold.addEventListener("click", holding);
+
 newGame.addEventListener("click", start);
-//modal_btn.addEventListener("click", clickModal);
-
-/**********************************************
-*** LISTENERS/EVENTS
-**********************************************/
-
-function clickModal() {
-    modal.style.visibility = "none";
-    modal.style.opacity = "0";
-    document.querySelector(".dark").style.opacity = "1";
-    document.body.style.zIndex = "15";
-    modal.style.zIndex = "-1";
-}
-
-
 
 scoreLimit.addEventListener("input", function (e) {
     winningScore = e.target.value;
@@ -200,19 +191,86 @@ scoreLimit.addEventListener("input", function (e) {
 scoreForm.addEventListener("submit", scoreInput);
 modal_btn.addEventListener("click", function () {
     if (!scoreInput()) {
-        hideError.style.display = "block";
-        hideError.style.visibility = "visible"
-        hideError.classList.toggle("animate");
+        showError()
     }
 })
 
+pig_icon.addEventListener("mousedown", function () {
+    pig_icon.style.transform = "scale(0.80)"
+    pig_icon.style.transition = "transform 0.4s"
+})
+
+pig_icon.addEventListener("mouseup", function () {
+    pig_icon.style.transform = "scale(1.0)"
+    showModal();
+})
+
+
+/**********************************************
+*** REUSABLE FUNCTIONS
+**********************************************/
+
+//clickModal()
+//Hides the Modal, assigns the Z-Index and gets rid of the error div and starts a fresh new game.
+
+function hideModal() {
+    modal.style.visibility = "none";
+    modal.style.opacity = "0";
+    document.querySelector(".dark").style.opacity = "1";
+    document.body.style.zIndex = "15";
+    modal.style.zIndex = "-1";
+    pig_icon.style.zIndex = "0"
+    errorGone();
+    start();
+}
+
+//showError()
+//Shows the error section, animates the error to vibrate from left to right.
+
+function showError() {
+    hideError.style.display = "block";
+    hideError.style.visibility = "visible"
+    hideError.classList.toggle("animate");
+}
+
+//errorGone()
+//Hides the error and sets it to none.
+
+function errorGone() {
+    hideError.style.display = "none";
+    hideError.style.visibility = "none"
+}
+
+//showModal()
+//Hides the modal, assigns the z-index properly, sets the scoreLimit input box to blank.
+
+function showModal() {
+    modal.style.visibility = "visible";
+    modal.style.opacity = "1";
+    document.querySelector(".dark").style.opacity = "1";
+    document.body.style.zIndex = "-1";
+    modal.style.zIndex = "10";
+    errorGone();
+    scoreLimit.value = "";
+}
+
+//scoreInput()
+//Uses the HTML5 input min and max values through getAttribute and sees if the user types a number within the range.
+//Returns true or false because I want to  reuse it whenever possible; like when the modal button is called, it will see what to do  depending on the result.
+
+
 function scoreInput() {
     if ((Number(winningScore) >= Number(scoreLimit.getAttribute("min")) && Number(winningScore) <= Number(scoreLimit.getAttribute("max")))) {
-        clickModal();
+        hideModal();
         return true;
     }
     return false;
 }
+
+
+
+
+
 
 
 
