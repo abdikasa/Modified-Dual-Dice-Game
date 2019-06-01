@@ -47,6 +47,11 @@ body {
     overflow: hidden;
 }
 
+.pig-icon {
+    position: absolute;
+    right: 0;
+}
+
 .dark {
     opacity: 0.5;
 }
@@ -95,6 +100,7 @@ body {
     height: 35px;
     font-size: 20px;
     margin-top: 0.8%;
+    text-align: center;
 }
 
 .center-helper {
@@ -267,7 +273,6 @@ i {
     top: 45%;
 }
 
-
 .winner {
     background-color: #f7f7f7;
 }
@@ -303,4 +308,3 @@ i {
         transform: translateX(-10px) scale(1.01);
     }
 }
-
