@@ -103,6 +103,10 @@ body {
     text-align: center;
 }
 
+.modal input:focus {
+    outline: none;
+}
+
 .center-helper {
     transform: translateY(15%);
     left: 50%;
