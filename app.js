@@ -90,14 +90,17 @@ function handleButtonAction() {
 
 let changeTurns = function () {
     if (activePlayer === 0) {
-        document.querySelector(`.player-${activePlayer}-panel`).classList.toggle(`active`);
+        document.querySelector(`.player-${activePlayer}-panel`).classList.remove(`active`);
         activePlayer = 1;
         document.querySelector(`.player-${activePlayer}-panel`).classList.add(`active`);
     } else {
-        document.querySelector(`.player-${activePlayer}-panel`).classList.toggle(`active`);
+        document.querySelector(`.player-${activePlayer}-panel`).classList.remove(`active`);
         activePlayer = 0;
         document.querySelector(`.player-${activePlayer}-panel`).classList.add(`active`);
     }
+    diceImg.forEach(function (item) {
+        item.style.display = "none";
+    })
     return activePlayer;
 }
 
@@ -141,9 +144,12 @@ let holding = function () {
 //Cleverly manipulated the DOM and the defined names for the images by using javascript dynamic properties.
 //Outputs round score.
 //Switches turns if user rolls a 1, which results a round score of 0 and a skipped turn.
+//Simplified console log duties  with ternary operator that calculates whetehr player scored a 1 or 2 6's.
 
 diceRoll = function () {
-    var oldScore = roundScore;
+    let oldScore = roundScore;
+    let lostTurn = false;
+    let stmt = "";
     dice = Math.floor(Math.random() * 6) + 1;
     dice2 = Math.floor(Math.random() * 6) + 1;
 
@@ -155,18 +161,23 @@ diceRoll = function () {
         roundScore = 0;
         document.getElementById(`current-${activePlayer}`).textContent = roundScore;
         activePlayer = changeTurns();
+        lostTurn = true;
     } else if (dice === 6 && dice2 === 6) {
         roundScore = 0;
         document.getElementById(`score-${activePlayer}`).textContent = roundScore;
         activePlayer = changeTurns();
+        lostTurn = true;
     } else {
         diceImg[0].src = `dice-${dice}.png`
         diceImg[1].src = `dice-${dice2}.png`
         oldScore = roundScore;
         roundScore += (dice + dice2);
         document.getElementById(`current-${activePlayer}`).textContent = roundScore;
+        lostTurn = false;
     }
-    console.log(`D1 [${dice}] + D2 [${dice2}] = ${roundScore} (Last score: ${oldScore})`);
+    stmt = lostTurn === true ? `UNLUCKY, Player rolled a 1 or two 6's` : `Player ${activePlayer} D1 [${dice}] + D2 [${dice2}] = ${roundScore} 
+    (Last score: ${oldScore})`;
+    console.log(stmt);
 }
 
 /**********************************************
@@ -178,7 +189,7 @@ diceRoll = function () {
 //Introduced something other than boring click to mouse(down||up), user presses it and holds it down, and when released the modal pops up.
 //Pig icon will not be accessible until a winner is declared so users can't just change scores whenever they feel like it.
 //8:21 [2019-05-31] Fixed issue where if user decided to click new game instead of clicking the pig icon to chnage the score limit, pig icon remains clickable
-    //Issue fixed with setting z-index to 0 if user clicks new game button.
+//Issue fixed with setting z-index to 0 if user clicks new game button.
 
 roll.addEventListener("click", diceRoll);
 
@@ -186,7 +197,7 @@ hold.addEventListener("click", holding);
 
 newGame.addEventListener("click", function () {
     start();
-    pig_icon.style.zIndex="0";
+    pig_icon.style.zIndex = "0";
 });
 
 scoreLimit.addEventListener("input", function (e) {
