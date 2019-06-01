@@ -177,12 +177,17 @@ diceRoll = function () {
 //Listeners are only called and executed in the cycle after the functions have been called.
 //Introduced something other than boring click to mouse(down||up), user presses it and holds it down, and when released the modal pops up.
 //Pig icon will not be accessible until a winner is declared so users can't just change scores whenever they feel like it.
+//8:21 [2019-05-31] Fixed issue where if user decided to click new game instead of clicking the pig icon to chnage the score limit, pig icon remains clickable
+    //Issue fixed with setting z-index to 0 if user clicks new game button.
 
 roll.addEventListener("click", diceRoll);
 
 hold.addEventListener("click", holding);
 
-newGame.addEventListener("click", start);
+newGame.addEventListener("click", function () {
+    start();
+    pig_icon.style.zIndex="0";
+});
 
 scoreLimit.addEventListener("input", function (e) {
     winningScore = e.target.value;
