@@ -87,17 +87,18 @@ function handleButtonAction() {
 //It will look at the global activePlayer variable and check to see if it's 0 or 1; player 1 or player 2.
 //I used the toggle class to remove/add the active class from one player and add it to another.
 //Finally it will return the value of activePlayer; which will be stored in another variable for later use.
+//Edit:  Commented old code out, newer addition utilizes the toggle property in the classList object. 
 
 let changeTurns = function () {
     if (activePlayer === 0) {
-        document.querySelector(`.player-${activePlayer}-panel`).classList.remove(`active`);
         activePlayer = 1;
-        document.querySelector(`.player-${activePlayer}-panel`).classList.add(`active`);
     } else {
-        document.querySelector(`.player-${activePlayer}-panel`).classList.remove(`active`);
         activePlayer = 0;
-        document.querySelector(`.player-${activePlayer}-panel`).classList.add(`active`);
     }
+    roundScore = 0;
+    document.querySelector(`.player-0-panel`).classList.toggle(`active`);
+    document.querySelector(`.player-1-panel`).classList.toggle(`active`);
+
     diceImg.forEach(function (item) {
         item.style.display = "none";
     })
